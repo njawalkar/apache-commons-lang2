@@ -748,6 +748,9 @@ public class ClassUtils {
      */
     public static Class getClass(
             ClassLoader classLoader, String className, boolean initialize) throws ClassNotFoundException {
+
+        // check length of className
+
         try {
             Class clazz;
             if (abbreviationMap.containsKey(className)) {
