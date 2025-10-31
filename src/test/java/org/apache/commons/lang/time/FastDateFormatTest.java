@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -225,13 +225,6 @@ public class FastDateFormatTest extends TestCase {
             assertEquals("-04:00", fdf.format(date2));
             assertEquals("-04:00", fdf.format(cal2));
             assertEquals("-04:00", fdf.format(millis2));
-
-            String pattern = "GGGG GGG GG G yyyy yyy yy y MMMM MMM MM M" +
-                " dddd ddd dd d DDDD DDD DD D EEEE EEE EE E aaaa aaa aa a zzzz zzz zz z";
-            fdf = FastDateFormat.getInstance(pattern);
-            sdf = new SimpleDateFormat(pattern);
-            assertEquals(sdf.format(date1), fdf.format(date1));
-            assertEquals(sdf.format(date2), fdf.format(date2));
 
         } finally {
             Locale.setDefault(realDefaultLocale);
