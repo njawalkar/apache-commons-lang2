@@ -781,35 +781,6 @@ public class ClassUtils {
     }
 
     /**
-     * Gets the primitive class for the given class name, for example "byte".
-     *
-     * @param className the primitive class for the given class name.
-     * @return the primitive class.
-     */
-//    static Class getPrimitiveClass(final String className) {
-//        if(Boolean.TYPE.getName().equals(className)){
-//            return Boolean.class;
-//        }
-//        else if (.TYPE.getName().equals(className)){
-//            return .class;
-//        }
-//                else if (.TYPE.getName().equals(className)){
-//            return .class;
-//        }
-//
-//
-//        primitiveWrapperMap.put(Boolean.TYPE, Boolean.class);
-//        primitiveWrapperMap.put(Byte.TYPE, Byte.class);
-//        primitiveWrapperMap.put(Character.TYPE, Character.class);
-//        primitiveWrapperMap.put(Short.TYPE, Short.class);
-//        primitiveWrapperMap.put(Integer.TYPE, Integer.class);
-//        primitiveWrapperMap.put(Long.TYPE, Long.class);
-//        primitiveWrapperMap.put(Double.TYPE, Double.class);
-//        primitiveWrapperMap.put(Float.TYPE, Float.class);
-//        primitiveWrapperMap.put(Void.TYPE, Void.TYPE);
-//    }
-
-    /**
      * Returns the (initialized) class represented by <code>className</code>
      * using the <code>classLoader</code>.  This implementation supports
      * the syntaxes "<code>java.util.Map.Entry[]</code>",
