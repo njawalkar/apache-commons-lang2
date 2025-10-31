@@ -600,11 +600,11 @@ public class ClassUtilsTest extends TestCase {
     public void testGetClassDoesNotRecurse() throws Exception {
         StringBuffer longName = new StringBuffer("firstLabel");
         for (int i=0; i<10000; i++){
-            longName.append(".nextLabel" + i);
+            longName.append(".nextLabel").append(i);
         }
 
-        // In 2.6 this throws a StackOverFlowError (CVE 
-        ClassUtils.getClass(longName.toString()+ ".class");
+        // In 2.6 this throws a StackOverFlowError (CVE-2025-48924)
+        assertGetClassThrowsClassNotFound( longName.append(".class").toString() );
     }
 
     public void testWithInterleavingWhitespace() throws ClassNotFoundException {

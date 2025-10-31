@@ -84,6 +84,22 @@ public class ClassUtils {
     }
 
     /**
+     * Maps names of primitives to their corresponding primitive {@link Class}es.
+     */
+    private static final Map NAME_PRIMITIVE_MAP = new HashMap();
+    static {
+        NAME_PRIMITIVE_MAP.put(Boolean.TYPE.getName(), Boolean.TYPE);
+        NAME_PRIMITIVE_MAP.put(Byte.TYPE.getName(), Byte.TYPE);
+        NAME_PRIMITIVE_MAP.put(Character.TYPE.getName(), Character.TYPE);
+        NAME_PRIMITIVE_MAP.put(Double.TYPE.getName(), Double.TYPE);
+        NAME_PRIMITIVE_MAP.put(Float.TYPE.getName(), Float.TYPE);
+        NAME_PRIMITIVE_MAP.put(Integer.TYPE.getName(), Integer.TYPE);
+        NAME_PRIMITIVE_MAP.put(Long.TYPE.getName(), Long.TYPE);
+        NAME_PRIMITIVE_MAP.put(Short.TYPE.getName(), Short.TYPE);
+        NAME_PRIMITIVE_MAP.put(Void.TYPE.getName(), Void.TYPE);
+    }
+
+    /**
      * Maps wrapper <code>Class</code>es to their corresponding primitive types.
      */
     private static final Map wrapperPrimitiveMap = new HashMap();
@@ -748,34 +764,50 @@ public class ClassUtils {
      */
     public static Class getClass(
             ClassLoader classLoader, String className, boolean initialize) throws ClassNotFoundException {
-
-        // check length of className
-
-        try {
-            Class clazz;
-            if (abbreviationMap.containsKey(className)) {
-                String clsName = "[" + abbreviationMap.get(className);
-                clazz = Class.forName(clsName, initialize, classLoader).getComponentType();
-            } else {
-                clazz = Class.forName(toCanonicalName(className), initialize, classLoader);
-            }
-            return clazz;
-        } catch (ClassNotFoundException ex) {
-            // allow path separators (.) as inner class name separators
-            int lastDotIndex = className.lastIndexOf(PACKAGE_SEPARATOR_CHAR);
-
-            if (lastDotIndex != -1) {
-                try {
-                    return getClass(classLoader, className.substring(0, lastDotIndex) +
-                            INNER_CLASS_SEPARATOR_CHAR + className.substring(lastDotIndex + 1),
-                            initialize);
-                } catch (ClassNotFoundException ex2) {
+        String next = className;
+        int lastDotIndex = -1;
+        do {
+            try {
+                final Class clazz = (Class) NAME_PRIMITIVE_MAP.get(next);
+                return clazz != null ? clazz : Class.forName(toCanonicalName(next), initialize, classLoader);
+            } catch (final ClassNotFoundException ex) {
+                lastDotIndex = next.lastIndexOf(PACKAGE_SEPARATOR_CHAR);
+                if (lastDotIndex != -1) {
+                    next = next.substring(0, lastDotIndex) + INNER_CLASS_SEPARATOR_CHAR + next.substring(lastDotIndex + 1);
                 }
             }
-
-            throw ex;
-        }
+        } while (lastDotIndex != -1);
+        throw new ClassNotFoundException(next);
     }
+
+    /**
+     * Gets the primitive class for the given class name, for example "byte".
+     *
+     * @param className the primitive class for the given class name.
+     * @return the primitive class.
+     */
+//    static Class getPrimitiveClass(final String className) {
+//        if(Boolean.TYPE.getName().equals(className)){
+//            return Boolean.class;
+//        }
+//        else if (.TYPE.getName().equals(className)){
+//            return .class;
+//        }
+//                else if (.TYPE.getName().equals(className)){
+//            return .class;
+//        }
+//
+//
+//        primitiveWrapperMap.put(Boolean.TYPE, Boolean.class);
+//        primitiveWrapperMap.put(Byte.TYPE, Byte.class);
+//        primitiveWrapperMap.put(Character.TYPE, Character.class);
+//        primitiveWrapperMap.put(Short.TYPE, Short.class);
+//        primitiveWrapperMap.put(Integer.TYPE, Integer.class);
+//        primitiveWrapperMap.put(Long.TYPE, Long.class);
+//        primitiveWrapperMap.put(Double.TYPE, Double.class);
+//        primitiveWrapperMap.put(Float.TYPE, Float.class);
+//        primitiveWrapperMap.put(Void.TYPE, Void.TYPE);
+//    }
 
     /**
      * Returns the (initialized) class represented by <code>className</code>
